@@ -1,11 +1,12 @@
 import json, sys, os, subprocess
-from utils.common import colored_text, GREEN, RED
+from keroro.utils.common import colored_text, GREEN, RED
+from platformdirs import user_config_dir
 
 def set_up():
-    if os.path.exists(os.path.join(sys.path[0], 'config.json')):
+    if os.path.exists(os.path.join(user_config_dir('keroro'), 'config.json')):
         return
-
-    update_lua_script()
+    #!TODO inherently un-nix-like behavior, need to rewrite
+    #update_lua_script()
 
     print(colored_text([[GREEN, 'Running setup!\n']]))
     anime_folder = input('Anime folder path: ')
@@ -79,12 +80,12 @@ def update_lua_script():
         f.write(to_prepend + '\n' + content)
 
 def get_config():
-    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'config.json')) as f:
+    with open(os.path.join(user_config_dir("keroro"), 'config.json')) as f:
         config = json.load(f)
         return config
 
 def save_config(config):
-    with open(os.path.join(sys.path[0], 'config.json'), 'w') as f:
+    with open(os.path.join(user_config_dir("keroro"), 'config.json'), 'w') as f:
         f.seek(0)
         json.dump(config, f, indent=4)
         f.truncate()

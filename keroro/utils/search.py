@@ -1,5 +1,5 @@
-import utils.anilist_requests
-from utils.common import colored_text, GREEN, RED, CYAN
+import keroro.utils.anilist_requests
+from keroro.utils.common import colored_text, GREEN, RED, CYAN
 
 def get_anilist_id():
     search_term = input(colored_text(
@@ -44,4 +44,4 @@ def get_anilist_id():
             return search_results[int(choice) - 1][1]
             
 def search(searchTerm, page):
-    return utils.anilist_requests.get_search_results(searchTerm, page)
+    return keroro.utils.anilist_requests.get_search_results(searchTerm, page)

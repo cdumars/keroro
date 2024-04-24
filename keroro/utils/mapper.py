@@ -1,6 +1,7 @@
 import json, os, sys
-import utils.anilist_requests, utils.search, utils.config
-from utils.common import colored_text, GREEN, CYAN, RED
+from keroro.utils import anilist_requests, search, config
+from keroro.utils.common import colored_text, GREEN, CYAN, RED
+from platformdirs import user_data_dir
 
 def map():
     remove_invalid_paths()
@@ -16,7 +17,7 @@ def remove_invalid_paths():
 
 def get_leaf_folders():
     leaf_folders = []
-    anime_folder = utils.config.get_config()['anime_folder']
+    anime_folder = config.get_config()['anime_folder']
     stack = [anime_folder]
     while stack:
         cur = stack.pop()
@@ -37,7 +38,7 @@ def get_unmapped_folders(folders):
 def map_folder_from_unmapped(unmapped_folders):
     print(colored_text([[GREEN, '\nUnmapped folders:']]))
     for i, folder in enumerate(unmapped_folders):
-        anime_folder_len = len(utils.config.get_config()['anime_folder'])
+        anime_folder_len = len(config.get_config()['anime_folder'])
         relative_folder_path = folder[anime_folder_len + 1:]
         print(colored_text([
             [None, '['],
@@ -63,7 +64,7 @@ def map_folder_from_unmapped(unmapped_folders):
         print(colored_text([[RED, '\nInvalid folder number!']]))
         return
 
-    anilist_id = utils.search.get_anilist_id()
+    anilist_id = search.get_anilist_id()
     if not anilist_id: # User aborted mapping
         unmapped_folders.clear()
         return
@@ -75,7 +76,7 @@ def map_folder_from_unmapped(unmapped_folders):
         print(colored_text([[GREEN, '\nAll your folders are mapped!']]))
 
 def map_folder(folder, anilist_id):
-    anime_details = utils.anilist_requests.get_anime_details(anilist_id)
+    anime_details = anilist_requests.get_anime_details(anilist_id)
     folder_map = get_map()
     folder_map[folder] = {
         'anilist_id': anilist_id,
@@ -91,14 +92,14 @@ def map_folder(folder, anilist_id):
 
 def get_map():
     try:
-        with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'map.json')) as f:
+        with open(os.path.join(user_data_dir('keroro'), 'map.json')) as f:
             folder_map = json.load(f)
     except:
         folder_map = {}
     return folder_map
 
 def save_map(folder_map):
-    with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'map.json'), 'w') as f:
+    with open(os.path.join(user_data_dir('keroro'), 'map.json'), 'w') as f:
         f.seek(0)
         json.dump(folder_map, f, indent = 4)
         f.truncate()

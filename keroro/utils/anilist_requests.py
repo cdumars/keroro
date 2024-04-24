@@ -1,8 +1,8 @@
 import requests
-import utils.config
+import keroro.utils.config
 
 def anilist_call(query, variables):
-    config_dict = utils.config.get_config()
+    config_dict = keroro.utils.config.get_config()
     url = 'https://graphql.anilist.co'
     response = requests.post(
         url,
@@ -12,7 +12,7 @@ def anilist_call(query, variables):
     return response.json()
 
 def get_watching_list():
-    config_dict = utils.config.get_config()
+    config_dict = keroro.utils.config.get_config()
     anilist_user = config_dict["anilist_user"]
     variables = {
         "userName": anilist_user
@@ -82,7 +82,7 @@ def update_progress(mediaId, progress):
     anilist_call(query, variables)
 
 def get_progress(mediaId):
-    config_dict = utils.config.get_config()   
+    config_dict = keroro.utils.config.get_config()   
     variables = {
         "userName": config_dict["anilist_user"],
         "mediaId": mediaId

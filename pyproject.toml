@@ -1,0 +1,15 @@
+[project]
+name = "keroro"
+dynamic = ["version"]
+dependencies = [
+  "colorama",
+  "requests",
+  "pypresence",
+]
+
+[project.scripts]
+keroro = "keroro:run"
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"

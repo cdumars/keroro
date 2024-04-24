@@ -1,10 +1,10 @@
 import subprocess, os
-import utils.anilist_requests, utils.mapper, utils.offset, utils.config
-from utils.common import colored_text, GREEN, CYAN, YELLOW, RED
+from keroro.utils import anilist_requests, mapper, offset, config
+from keroro.utils.common import colored_text, GREEN, CYAN, YELLOW, RED
 
 def sync_with_anilist():
-    watchlist = utils.anilist_requests.get_watching_list()
-    folder_map = utils.mapper.get_map()
+    watchlist = anilist_requests.get_watching_list()
+    folder_map = mapper.get_map()
     for _, o in folder_map.items():
         anilist_id = o['anilist_id']
         if anilist_id in watchlist:
@@ -17,15 +17,15 @@ def sync_with_anilist():
                 if not keep:
                     o['progress'] = watchlist[anilist_id]['progress']
                 else:
-                    utils.anilist_requests.update_progress(anilist_id, o['progress'])
+                    anilist_requests.update_progress(anilist_id, o['progress'])
             else:
                 o['progress'] = watchlist[anilist_id]['progress']
         else:
             o['status'] = 'UNKNOWN'
-    utils.mapper.save_map(folder_map)
+    mapper.save_map(folder_map)
 
 def check_local_progress(available_list):
-    folder_map = utils.mapper.get_map()
+    folder_map = mapper.get_map()
     print(folder_map)
     for _, v in folder_map.items():
 
@@ -39,7 +39,7 @@ def continue_watching():
     except:
         print('\nCan\'t connect to AniList!')
 
-    folder_map = utils.mapper.get_map()
+    folder_map = mapper.get_map()
     # We do a little trolling
     available_list = [{**v, 'folder': k} for k, v in folder_map.items() if 'status' in v and v['status'] == 'WATCHING' and get_episode_path(k, v['progress'] + 1)]
     if not available_list:
@@ -75,7 +75,7 @@ def get_episode_path(selected_anime_folder, selected_anime_episode):
         if file.startswith('.'):
             continue
         episodes.append(file)
-    folder_map = utils.mapper.get_map()
+    folder_map = mapper.get_map()
     offset = 0
     if 'offset' in folder_map[selected_anime_folder]:
         offset = folder_map[selected_anime_folder]['offset']
@@ -89,7 +89,7 @@ def play_episode(episode_path):
     if not os.path.exists(episode_path):
         print(colored_text([[RED, f"\n'{episode_path}' does not exist!"]]))
         exit()
-    mpv_path = utils.config.get_config()['mpv_path']
+    mpv_path = config.get_config()['mpv_path']
     subprocess.Popen([mpv_path, episode_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     quit()
 
@@ -107,9 +107,9 @@ def more_options():
         ]))
         user_input = input('\nInput: ')
         if user_input == 'm':
-            utils.mapper.map()
+            mapper.map()
         elif user_input == 'o':
-            utils.offset.create_offset()
+            offset.create_offset()
         elif user_input == 'w':
             continue_watching()
         elif user_input == 'q':
