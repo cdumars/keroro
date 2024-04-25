@@ -1,5 +1,4 @@
 import os, json, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Add parent directory to sys path so we can import utils
 from keroro.utils import mapper, config, common
 
 def save_presence(presence_map):
@@ -8,7 +7,7 @@ def save_presence(presence_map):
         json.dump(presence_map, f, indent = 4)
         f.truncate()
 
-if __name__ == '__main__':
+def run():
     file_path = sys.argv[1] # First argument is the current video's file path
     folder_path, file_name = os.path.split(file_path)
     folder_map = mapper.get_map()

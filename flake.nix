@@ -10,8 +10,15 @@
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in rec {
       packages.default = pkgs.callPackage ./default.nix {inherit pkgs;};
+      packages.mpvScripts.keroro = pkgs.writeText "keroro-mpv" ''
+      local update_path = ${packages.default}/bin/keroro-update
+      local update_presence_path = ${packages.default}/bin/keroro-update-presence
+      local run_presence_path = ${packages.default}/bin/keroro-run-presence
+
+      ${builtins.readFile ./anilist.lua}
+      '';
       devShells.default = pkgs.mkShell {
         inputsFrom = [(pkgs.callPackage ./default.nix {inherit pkgs;})];
       };

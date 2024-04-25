@@ -9,6 +9,9 @@ dependencies = [
 
 [project.scripts]
 keroro = "keroro:run"
+keroro-update = "keroro.utils.update_progress:run"
+keroro-update-presence = "keroro.presence.update_presence:run"
+keroro-run-presence = "keroro.presence.run_presence:run"
 
 [build-system]
 requires = ["setuptools >= 61.0"]

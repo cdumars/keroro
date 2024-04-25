@@ -13,7 +13,7 @@ local function start_presence()
     if cmd ~= nil then
         return
     end
-    cmd = start_process({python_path, run_presence_path})
+    cmd = start_process(run_presence_path)
     mp.osd_message("Discord RPC: Started")
 end
 
@@ -24,12 +24,12 @@ local function stop_presence()
 end
 
 local function update_presence(pos)
-    start_process({python_path, update_presence_path, mp.get_property("path"), pos})
+    start_process({update_presence_path, mp.get_property("path"), pos})
 end
 
 local function check_completion(pos)
     if tonumber(pos) >= 80 then
-        start_process({python_path, update_path, mp.get_property("path")})
+        start_process({update_path, mp.get_property("path")})
         complete = true
     end
 end
