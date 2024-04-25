@@ -1,8 +1,7 @@
 {pkgs}:
-
-  pkgs.python3Packages.buildPythonPackage {
+pkgs.python3Packages.buildPythonPackage {
   pname = "keroro";
-  version = "0.0.1+git;
+  version = "0.0.1+git";
   pyproject = true;
 
   src = ./.;
