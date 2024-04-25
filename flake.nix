@@ -12,13 +12,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in rec {
       packages.default = pkgs.callPackage ./default.nix {inherit pkgs;};
-      packages.mpvScripts.keroro = pkgs.writeText "keroro-mpv" ''
-        local update_path = ${packages.default}/bin/keroro-update
-        local update_presence_path = ${packages.default}/bin/keroro-update-presence
-        local run_presence_path = ${packages.default}/bin/keroro-run-presence
-
-        ${builtins.readFile ./anilist.lua}
-      '';
+      packages.mpvScripts.default = pkgs.callPackage ./script.nix {inherit pkgs; keroro = packages.default;};
       devShells.default = pkgs.mkShell {
         inputsFrom = [(pkgs.callPackage ./default.nix {inherit pkgs;})];
       };
