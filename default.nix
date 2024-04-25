@@ -2,7 +2,9 @@
 
 pkgs.python3Packages.buildPythonPackage {
   pname = "keroro";
-  version = "0.0.1";
+  version = pkgs.runCommand "get-rev" {
+    nativeBuildInputs = [ pkgs.git ];
+  } "git rev-parse --short HEAD > $out" ;
   pyproject = true;
 
   src = ./.;
