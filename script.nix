@@ -20,7 +20,7 @@ in
     dontUnpack = true;
 
     installPhase = ''
-    mkdir -p $out
-    cp $src $out
+    mkdir -p $out/share/mpv/scripts
+    cp $src $out/share/mpv/scripts/mpv-keroro.lua
     '';
 }
