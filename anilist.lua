@@ -36,7 +36,7 @@ end
 
 Timer = mp.add_periodic_timer(5, function()
     local pos = mp.get_property("percent-pos")
-    update_presence(pos)
+    #update_presence(pos)
     if not complete then
         check_completion(pos)
     end
@@ -45,11 +45,11 @@ end)
 mp.register_event("start-file", function()
     complete = false
     Timer:resume()
-    start_presence()
+    #start_presence()
 end)
 
 mp.register_event("shutdown", function()
     if cmd ~= nil then
-        stop_presence()
+    #    stop_presence()
     end
 end)
