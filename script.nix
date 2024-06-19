@@ -3,9 +3,9 @@
 
 let
   script = pkgs.writeText "mpv-keroro.lua" ''
-  local update_path = ${keroro}/bin/keroro-update
-  local update_presence_path = ${keroro}/bin/keroro-update-presence
-  local run_presence_path = ${keroro}/bin/keroro-run-presence
+  local update_path = "${keroro}/bin/keroro-update"
+  local update_presence_path = "${keroro}/bin/keroro-update-presence"
+  local run_presence_path = "${keroro}/bin/keroro-run-presence"
 
   ${builtins.readFile ./anilist.lua}
   '';
